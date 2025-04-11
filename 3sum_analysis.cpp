@@ -34,36 +34,37 @@ public:
 };
 
 int main() {
-    srand(time(0)); // seed random number generator
+    srand(time(0));
+    
+    vector<int> sizes = {100, 200, 400, 800, 1600, 3200, 6400};
 
-    vector<int> sizes = {100, 200, 400, 800, 1600, 3200, 6400}; // you can stop early if it's too slow
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> big(-100000, 100000);
+    uniform_int_distribution<> small(1, 1000);
 
     for (int n : sizes) {
         vector<int> nums;
 
-        // Add random numbers
         for (int i = 0; i < n - 3; ++i) {
-            nums.push_back(rand() % 200001 - 100000); // Range: -100000 to 100000
+            nums.push_back(big(gen));
         }
 
-        // Ensure one valid triplet: -a, -b, a + b
-        int a = rand() % 1000 + 1;
-        int b = rand() % 1000 + 1;
+        int a = small(gen);
+        int b = small(gen);
         nums.push_back(-a);
         nums.push_back(-b);
         nums.push_back(a + b);
 
-        // Shuffle to randomize positions
-        random_shuffle(nums.begin(), nums.end());
+        shuffle(nums.begin(), nums.end(), gen);
 
-        // Time the function
         auto start = chrono::high_resolution_clock::now();
         vector<vector<int>> result = threeSum(nums);
         auto end = chrono::high_resolution_clock::now();
 
         double time_ms = chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0;
 
-        cout << "Input size: " << n << " -> Time: " << time_ms << " ms, Found triplets: " << result.size() << endl;
+        cout << "n = " << n << " - time = " << time_ms << " ms, triplets: " << result.size() << endl;
     }
 
     return 0;
