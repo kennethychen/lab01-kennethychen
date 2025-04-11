@@ -6,9 +6,7 @@
 #include <random>
 using namespace std;
 
-class Solution {
-public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
+vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>> trips;
         for (int i = 0; i < nums.size(); ++i) {
             for (int j = 0; j < nums.size(); ++j) {
@@ -17,14 +15,14 @@ public:
                         if (nums[i] + nums[j] + nums[k] == 0) {
                             vector<int> curr = {nums[i], nums[j], nums[k]};
                             sort(curr.begin(), curr.end());
-                            bool isDuplicate = false;
+                            bool duplicate = false;
                             for (int l = 0; l < trips.size(); l++) {
                                 if (trips[l] == curr) {
-                                    isDuplicate = true;
+                                    duplicate = true;
                                     break;
                                 }
                             }
-                            if (!isDuplicate) {
+                            if (!duplicate) {
                                 trips.push_back(curr);
                             }
                         }
@@ -33,8 +31,7 @@ public:
             }
         }
         return trips;
-    }
-};
+}
 
 int main() {
     srand(time(0));
